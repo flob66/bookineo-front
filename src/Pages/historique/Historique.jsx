@@ -70,12 +70,12 @@ const Historique = ({ books }) => {
           <tbody>
             {filteredHistory.map((book) => (
               <tr key={book.id}>
-                <td>{book.title}</td>
-                <td>{book.owner}</td>
-                <td>{book.rentalInfo.renter}</td>
-                <td>{book.rentalInfo.rentDate}</td>
-                <td>{book.rentalInfo.returnDate}</td>
-                <td>{book.rentalInfo.duration}</td>
+                <td data-label="Titre">{book.title}</td>
+                <td data-label="Propriétaire">{book.owner}</td>
+                <td data-label="Locataire">{book.rentalInfo.renter}</td>
+                <td data-label="Date de location">{book.rentalInfo.rentDate}</td>
+                <td data-label="Date de retour">{book.rentalInfo.returnDate}</td>
+                <td data-label="Durée">{book.rentalInfo.duration}</td>
               </tr>
             ))}
           </tbody>

@@ -57,9 +57,9 @@ const Location = ({ books, setBooks }) => {
           <tbody>
             {availableBooks.map((book) => (
               <tr key={book.id} className="available">
-                <td>{book.title}</td>
-                <td>{book.author}</td>
-                <td>{book.price}€</td>
+                <td data-label="Titre">{book.title}</td>
+                <td data-label="Auteur">{book.author}</td>
+                <td data-label="Prix">{book.price}€</td>
                 <td>
                   <button onClick={() => setSelectedBook(book)}>Louer</button>
                 </td>
