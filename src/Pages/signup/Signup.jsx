@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import InputField from "../../Components/InputField";
+import InputField from "../../Components/inputField/InputField";
 import "./Signup.css";
 
 const Signup = () => {

@@ -1,0 +1,53 @@
+.message-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.message-table th,
+.message-table td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.message-table tr.unread {
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+}
+
+.message-table tr.read {
+  color: gray;
+  cursor: pointer;
+}
+
+.message-table tr:hover {
+  background-color: #f3f4f6;
+}
+
+.message-detail {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  background-color: #fafafa;
+}
+
+.message-detail h3 {
+  margin-top: 0;
+}
+
+.message-detail button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.message-detail button:hover {
+  background-color: #2563eb;
+}
