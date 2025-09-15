@@ -40,9 +40,9 @@ const Restitution = ({ books, setBooks }) => {
           <tbody>
             {rentedBooks.map((book) => (
               <tr key={book.id} className="rented">
-                <td>{book.title}</td>
-                <td>{book.rentalInfo.renter}</td>
-                <td>{book.rentalInfo.returnDate}</td>
+                <td data-label="Titre">{book.title}</td>
+                <td data-label="Locataire">{book.rentalInfo.renter}</td>
+                <td data-label="Date de retour">{book.rentalInfo.returnDate}</td>
                 <td>
                   <button onClick={() => handleReturn(book.id)}>
                     Restituer

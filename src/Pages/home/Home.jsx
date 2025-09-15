@@ -4,6 +4,7 @@ import Filters from "../../Components/filters/Filters";
 import BookDetailModal from "../../Components/bookDetailModal/BookDetailModal";
 import Header from "../../Components/header/Header";
 import ActionMenu from "../../Components/actionMenu/ActionMenu";
+import "./Home.css";
 
 const Home = ({ books, setBooks }) => {
   const [filters, setFilters] = useState({
@@ -78,7 +79,7 @@ const Home = ({ books, setBooks }) => {
         <ActionMenu />
         <Filters filters={filters} setFilters={setFilters} books={books} />
 
-        <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem" }}>
+        <div className="actions-container">
           <button onClick={() => alert("Ajouter un livre")}>Ajouter un livre</button>
           <button onClick={() => alert("Modifier un livre")}>Modifier un livre</button>
           <button onClick={() => alert("Supprimer un livre")}>Supprimer un livre</button>
