@@ -3,43 +3,9 @@ import BookTable from "../../Components/bookTable/BookTable";
 import Filters from "../../Components/filters/Filters";
 import BookDetailModal from "../../Components/bookDetailModal/BookDetailModal";
 import Header from "../../Components/header/Header";
+import ActionMenu from "../../Components/actionMenu/ActionMenu";
 
-const Home = () => {
-  const [books, setBooks] = useState([
-    {
-      id: 1,
-      title: "Le Petit Prince",
-      author: "Antoine de Saint-Exupéry",
-      year: 1943,
-      category: "Roman",
-      status: "Disponible",
-      price: 10,
-      owner: "Florian",
-      rentalInfo: {
-        renter: "Alice",
-        rentDate: "2025-09-10",
-        returnDate: "2025-09-15",
-        duration: "5 jours",
-      },
-    },
-    {
-      id: 2,
-      title: "1984",
-      author: "George Orwell",
-      year: 1949,
-      category: "Science-fiction",
-      status: "Loué",
-      price: 12,
-      owner: "Bob",
-      rentalInfo: {
-        renter: "Charlie",
-        rentDate: "2025-09-12",
-        returnDate: "2025-09-20",
-        duration: "8 jours",
-      },
-    },
-  ]);
-
+const Home = ({ books, setBooks }) => {
   const [filters, setFilters] = useState({
     title: "",
     status: "",
@@ -61,23 +27,79 @@ const Home = () => {
     return true;
   });
 
+  const exportToCSV = (data, filename = "books.csv") => {
+    const headers = [
+      "Titre",
+      "Auteur",
+      "Année",
+      "Catégorie",
+      "Statut",
+      "Prix",
+      "Propriétaire",
+      "Locataire",
+      "Date de location",
+      "Date de retour",
+      "Durée"
+    ];
+
+    const rows = data.map((book) => [
+      book.title,
+      book.author,
+      book.year,
+      book.category,
+      book.status,
+      book.price,
+      book.owner,
+      book.rentalInfo?.renter || "",
+      book.rentalInfo?.rentDate || "",
+      book.rentalInfo?.returnDate || "",
+      book.rentalInfo?.duration || "",
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => row.map((val) => `"${val}"`).join(",")),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
-    <><Header username="Florian" /><div style={{ padding: "2rem 1rem" }}>
-      <h2>Liste des livres</h2>
-      <Filters filters={filters} setFilters={setFilters} books={books} />
-      <button
-        onClick={() => alert("Ajouter un livre")}
-        style={{ marginBottom: "1rem" }}
-      >
-        Ajouter un livre
-      </button>
-      <BookTable books={filteredBooks} setSelectedBook={setSelectedBook} />
-      {selectedBook && (
-        <BookDetailModal
-          book={selectedBook}
-          onClose={() => setSelectedBook(null)} />
-      )}
-    </div></>
+    <>
+      <Header username="Florian" />
+      <div style={{ padding: "2rem 1rem" }}>
+        <h2>Liste des livres</h2>
+        <ActionMenu />
+        <Filters filters={filters} setFilters={setFilters} books={books} />
+
+        <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem" }}>
+          <button onClick={() => alert("Ajouter un livre")}>Ajouter un livre</button>
+          <button onClick={() => alert("Modifier un livre")}>Modifier un livre</button>
+          <button onClick={() => alert("Supprimer un livre")}>Supprimer un livre</button>
+          <button onClick={() => exportToCSV(filteredBooks, "books-filtrés.csv")}>
+            Exporter CSV (filtré)
+          </button>
+          <button onClick={() => exportToCSV(books, "books-complet.csv")}>
+            Exporter CSV (complet)
+          </button>
+        </div>
+
+        <BookTable books={filteredBooks} setSelectedBook={setSelectedBook} />
+
+        {selectedBook && (
+          <BookDetailModal
+            book={selectedBook}
+            onClose={() => setSelectedBook(null)}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

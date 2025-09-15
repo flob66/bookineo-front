@@ -1,0 +1,18 @@
+.action-menu {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.action-btn {
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 0.4rem;
+  text-decoration: none;
+  transition: background 0.2s ease-in-out;
+}
+
+.action-btn:hover {
+  background-color: #2563eb;
+}

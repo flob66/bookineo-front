@@ -6,6 +6,9 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [birthDate, setBirthDate] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState("");
@@ -18,6 +21,7 @@ const Signup = () => {
 
   const handleSignup = (e) => {
     e.preventDefault();
+
     if (!validateEmail(email)) {
       setError("Email invalide");
       return;
@@ -32,8 +36,20 @@ const Signup = () => {
       setError("Mot de passe et confirmation différents");
       return;
     }
+    if (!firstName || !lastName || !birthDate) {
+      setError("Tous les champs doivent être remplis");
+      return;
+    }
+
     setError("");
-    console.log("Compte créé !");
+    console.log("Compte créé !", {
+      email,
+      password,
+      firstName,
+      lastName,
+      birthDate,
+    });
+
     window.location.href = "/login";
   };
 
@@ -43,6 +59,29 @@ const Signup = () => {
         <h2>Créer un compte</h2>
 
         {error && <div className="error">{error}</div>}
+
+        <InputField
+          label="Prénom"
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          placeholder="Votre prénom"
+        />
+
+        <InputField
+          label="Nom"
+          type="text"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          placeholder="Votre nom"
+        />
+
+        <InputField
+          label="Date de naissance"
+          type="date"
+          value={birthDate}
+          onChange={(e) => setBirthDate(e.target.value)}
+        />
 
         <InputField
           label="Email"
@@ -59,7 +98,10 @@ const Signup = () => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Votre mot de passe"
           icon={
-            <span onClick={() => setShowPassword(!showPassword)}>
+            <span
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+            >
               {showPassword ? "Masquer" : "Voir"}
             </span>
           }
@@ -72,7 +114,10 @@ const Signup = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
           placeholder="Confirmez le mot de passe"
           icon={
-            <span onClick={() => setShowConfirm(!showConfirm)}>
+            <span
+              className="password-toggle"
+              onClick={() => setShowConfirm(!showConfirm)}
+            >
               {showConfirm ? "Masquer" : "Voir"}
             </span>
           }
