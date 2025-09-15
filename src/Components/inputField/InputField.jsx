@@ -1,12 +1,13 @@
 import React from "react";
 import "./InputField.css";
 
-const InputField = ({ label, type, value, onChange, placeholder, icon, disabled }) => {
+const InputField = ({ label, type, value, onChange, placeholder, icon, disabled, name }) => {
   return (
     <div className="input-group">
       <label className="input-label">{label}</label>
       <div className="input-wrapper">
         <input
+          name={name}
           type={type}
           value={value}
           onChange={onChange}
