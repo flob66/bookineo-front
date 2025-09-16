@@ -61,7 +61,7 @@ const Home = ({ books, setBooks }) => {
     const rows = data.map((book) => [
       book.title,
       book.author,
-      book.year,
+      book.published_date,
       book.category,
       book.status,
       book.price,
