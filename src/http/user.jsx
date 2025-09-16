@@ -13,3 +13,19 @@ export  const login = async (email, password) => {
         throw error;
     }
 }
+
+export const register = async (first_name, last_name, email, birthday, password) => {
+    try {
+        const response = await fetch('http://localhost:8000/api/register', {
+            method: 'POST',
+            body: JSON.stringify({ first_name, last_name, email, birthday, password })
+        });
+        if (!response.ok) {
+            throw new Error('Register failed');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error in:', error);
+        throw error;
+    }
+}

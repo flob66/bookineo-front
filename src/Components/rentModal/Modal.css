@@ -28,7 +28,7 @@
 }
 
 .modal input {
-  width: 100%;
+  width: calc(100% - 0.8rem);
   padding: 0.4rem;
   margin-top: 0.3rem;
   border: 1px solid #ccc;
@@ -53,4 +53,21 @@
 
 .confirm-btn:hover {
   background: #059669;
+}
+
+.comment-container{
+  display: grid !important;
+}
+
+textarea {
+  width: 100%;
+  max-width: 100%; 
+  box-sizing: border-box; 
+  padding: 5px;
+  border-radius: 0.3rem;
+  border: 1px solid #ccc;
+  outline: 0;
+  resize: vertical; 
+  max-height: 45vh;
+  margin-top: 0.3rem;
 }

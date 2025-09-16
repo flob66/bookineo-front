@@ -20,6 +20,7 @@ const BookTable = ({ books, setSelectedBook, setDeleteBook  }) => {
           <th>Statut</th>
           <th>Prix</th>
           <th>Propriétaire</th>
+          <th>ISBN</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -36,10 +37,11 @@ const BookTable = ({ books, setSelectedBook, setDeleteBook  }) => {
             <td data-label="Statut">{book.status}</td>
             <td data-label="Prix">{book.price}€</td>
             <td data-label="Propriétaire">{book.owner}</td>
+            <td data-label="ISBN">{book.isbn}</td>
             <td data-label="Actions">
-              <button onClick={() => handleDetail(book)}>Détail</button>
-              <button onClick={() => navigate(`/edit-book/${book.id}`)}>Modifier</button>
-              <button onClick={() => setDeleteBook(book)}>Supprimer</button>
+              <button className="options-btn" onClick={() => handleDetail(book)}>Détail</button>
+              <button className="options-btn" onClick={() => navigate(`/edit-book/${book.id}`)}>Modifier</button>
+              <button className="options-btn" onClick={() => setDeleteBook(book)}>Supprimer</button>
             </td>
           </tr>
         ))}

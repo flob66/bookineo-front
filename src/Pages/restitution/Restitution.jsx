@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import Header from "../../Components/header/Header";
 import ReturnModal from "../../Components/returnModal/ReturnModal";
+import { getUser, saveUser } from "../../utils/auth";
 // import "./Restitution.css"; 
 
 const Restitution = ({ books, setBooks }) => {
-  const [user] = useState({
-    email: "florian@example.com",
-    password: "password123",
-    firstName: "Florian",
-    lastName: "Bar",
-    birthDate: "1990-01-01",
-  });
+  const [user, setUser] = useState(
+      getUser() || {
+        email: "",
+        password: "",
+        first_name: "",
+        last_name: "",
+        birthday: "",
+      }
+  );
 
   const [selectedBook, setSelectedBook] = useState(null);
 
@@ -72,7 +75,7 @@ const Restitution = ({ books, setBooks }) => {
                   <td data-label="Date de location">{book.rentalInfo?.rentDate || "-"}</td>
                   <td data-label="Date de retour">{book.rentalInfo?.returnDate || "-"}</td>
                   <td data-label="Action">
-                    <button onClick={() => handleOpenReturn(book)}>Restituer</button>
+                    <button className="options-btn" onClick={() => handleOpenReturn(book)}>Restituer</button>
                   </td>
                 </tr>
               ))}

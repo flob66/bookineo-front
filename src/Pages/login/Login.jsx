@@ -4,6 +4,7 @@ import "./Login.css";
 import eyeIcon from "../../assets/svg/eye-show.svg"; 
 import eyeOffIcon from "../../assets/svg/eye-off.svg"; 
 import { login } from "../../http/user";
+import { saveUser } from "../../utils/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -24,11 +25,11 @@ const Login = () => {
     try {
       const data = await login(email, password);
       setLoginInfoFromAPI(data);
+      saveUser(data);
       window.location.href = "/home";
     } catch (error) {
       setError("Erreur lors de la connexion");
     }
-    
   };
 
   return (

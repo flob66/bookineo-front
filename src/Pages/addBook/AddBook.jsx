@@ -11,6 +11,7 @@ const AddBook = () => {
     category: "",
     price: "",
     owner: "", 
+    isbn: "", 
   });
 
   const [message, setMessage] = useState("");
@@ -25,12 +26,12 @@ const AddBook = () => {
     console.log("Livre ajouté :", book);
     setMessage("Livre ajouté avec succès !");
     setTimeout(() => setMessage(""), 3000);
-    setBook({ title: "", author: "", year: "", category: "", price: "", owner: "" });
+    setBook({ title: "", author: "", year: "", category: "", price: "", owner: "", isbn: "" });
   };
 
   return (
     <>
-      <Header username="Florian" />
+      <Header  />
       <div className="add-book-container">
         <h2>Ajouter un livre</h2>
 
@@ -84,6 +85,14 @@ const AddBook = () => {
             onChange={handleChange}
             placeholder="Vous ?"
             name="owner"
+          />
+          <InputField
+            label="ISBN"
+            type="number"
+            value={book.isbn}
+            onChange={handleChange}
+            placeholder="1"
+            name="isbn"
           />
 
           <button type="submit" className="btn">

@@ -46,7 +46,7 @@ const EditBook = ({ books, setBooks }) => {
   if (!bookToEdit) {
     return (
       <div style={{ padding: "2rem" }}>
-        <Header username="Florian" />
+        <Header  />
         <p>{message}</p>
       </div>
     );
@@ -54,7 +54,7 @@ const EditBook = ({ books, setBooks }) => {
 
   return (
     <>
-      <Header username="Florian" />
+      <Header  />
       <div className="edit-book-container">
         <h2>Modifier le livre</h2>
 
@@ -108,6 +108,14 @@ const EditBook = ({ books, setBooks }) => {
             onChange={handleChange}
             placeholder="Vous ?"
             name="owner"
+          />
+          <InputField
+            label="ISBN"
+            type="number"
+            value={book.isbn}
+            onChange={handleChange}
+            placeholder="1"
+            name="isbn"
           />
 
           <button type="submit" className="btn">

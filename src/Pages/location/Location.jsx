@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import Header from "../../Components/header/Header";
 import RentModal from "../../Components/rentModal/RentModal";
+import { getUser, saveUser } from "../../utils/auth";
+
 
 const Location = ({ books, setBooks }) => {
-  const [user, setUser] = useState({
-    email: "florian@example.com",
-    password: "password123",
-    firstName: "Florian",
-    lastName: "Bar",
-    birthDate: "1990-01-01",
-  });
+  const [user, setUser] = useState(
+    getUser() || {
+      email: "",
+      password: "",
+      first_name: "",
+      last_name: "",
+      birthday: "",
+    }
+  );
 
   const [selectedBook, setSelectedBook] = useState(null);
 
@@ -61,7 +65,7 @@ const Location = ({ books, setBooks }) => {
                 <td data-label="Auteur">{book.author}</td>
                 <td data-label="Prix">{book.price}€</td>
                 <td>
-                  <button onClick={() => setSelectedBook(book)}>Louer</button>
+                  <button className="options-btn" onClick={() => setSelectedBook(book)}>Louer</button>
                 </td>
               </tr>
             ))}
