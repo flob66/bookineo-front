@@ -2,8 +2,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   background-color: #f3f4f6;
+}
+
+.form-container-login{
+  height: 100vh;
 }
 
 .form {
@@ -61,3 +64,17 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.input-button{
+  border: 0;
+  background: unset;
+  outline: 0;
+}
+
+.input-button img{
+  display: flex;
+  align-items: center;
+  max-width: 25px;
+  cursor: pointer;
+}
+

@@ -22,6 +22,9 @@
   align-items: center;
   cursor: pointer;
   gap: 0.5rem;
+  border: 0;
+  background: unset;
+  color: white;
 }
 
 .user-icon {
