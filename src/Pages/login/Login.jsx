@@ -3,6 +3,7 @@ import InputField from "../../Components/inputField/InputField";
 import "./Login.css";
 import eyeIcon from "../../assets/svg/eye-show.svg"; 
 import eyeOffIcon from "../../assets/svg/eye-off.svg"; 
+import { login } from "../../http/user";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,16 +11,24 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
+  const [loginInfoFromAPI, setLoginInfoFromAPI] = useState(null);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (!email.includes("@")) {
       setError("Email invalide");
       return;
     }
     setError("");
-    console.log("Connexion réussie !");
-    window.location.href = "/home";
+    
+    try {
+      const data = await login(email, password);
+      setLoginInfoFromAPI(data);
+      window.location.href = "/home";
+    } catch (error) {
+      setError("Erreur lors de la connexion");
+    }
+    
   };
 
   return (
