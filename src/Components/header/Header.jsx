@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
 import logo from "../../assets/logo.png"; 
-import userIcon from "../../assets/user-icon.png"; 
+import userIcon from "../../assets/user-icon.png";
+import { getUser, saveUser } from "../../utils/auth"; 
 
-const Header = ({ username }) => {
+const Header = () => {
+  const user = getUser();
+
+  const username = user?.first_name + ' ' + user?.last_name;
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {

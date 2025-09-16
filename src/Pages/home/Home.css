@@ -11,13 +11,13 @@ h1{
 }
 
 .actions-container button{
-    background-color: #3b82f6;
+    background-color: #0d66f8;
     color: white;
     border-radius: 5px;
     border: 0;
-    max-height: 45px;
-    padding: 10px;
-    box-shadow: 1px 1px 2px #3b82f6;
+    max-height: 35px;
+    padding: 5px;
+    box-shadow: 1px 1px 2px #0d66f8;
 }
 
 .actions-container button:hover{

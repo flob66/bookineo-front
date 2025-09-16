@@ -46,7 +46,7 @@ const Messages = () => {
   };
 
   return (
-    <><Header username="Florian" /><div style={{ padding: "2rem" }}>
+    <><Header  /><div style={{ padding: "2rem" }}>
       <h2>Messagerie</h2>
       <p>Messages non lus : {unreadCount}</p>
       <MessageTable messages={messages} onRead={handleReadMessage} />

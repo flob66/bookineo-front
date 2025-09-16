@@ -2,25 +2,29 @@ import React, { useState } from "react";
 import Header from "../../Components/header/Header";
 import InputField from "../../Components/inputField/InputField";
 import "./Profile.css";
+import { getUser, saveUser } from "../../utils/auth";
 
 const Profile = () => {
-  const [user, setUser] = useState({
-    email: "florian@example.com",
-    password: "password123",
-    firstName: "Florian",
-    lastName: "Bar",
-    birthDate: "1990-01-01",
-  });
+  const [user, setUser] = useState(
+    getUser() || {
+      email: "",
+      password: "",
+      first_name: "",
+      last_name: "",
+      birthday: "",
+    }
+  );
 
   const [editMode, setEditMode] = useState(false);
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    setUser((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSave = () => {
+    saveUser(user); 
     setEditMode(false);
     setMessage("Profil mis à jour avec succès !");
     setTimeout(() => setMessage(""), 3000);
@@ -28,7 +32,7 @@ const Profile = () => {
 
   return (
     <>
-      <Header username={user.firstName} />
+      <Header username={user.first_name} />
       <div className="profile-container">
         <h2>Mon profil</h2>
 
@@ -57,29 +61,29 @@ const Profile = () => {
         <InputField
           label="Prénom"
           type="text"
-          value={user.firstName}
+          value={user.first_name}
           onChange={handleChange}
           placeholder="Prénom"
-          name="firstName"
+          name="first_name"
           disabled={!editMode}
         />
 
         <InputField
           label="Nom"
           type="text"
-          value={user.lastName}
+          value={user.last_name}
           onChange={handleChange}
           placeholder="Nom"
-          name="lastName"
+          name="last_name"
           disabled={!editMode}
         />
 
         <InputField
           label="Date de naissance"
           type="date"
-          value={user.birthDate}
+          value={user.birthday}
           onChange={handleChange}
-          name="birthDate"
+          name="birthday"
           disabled={!editMode}
         />
 

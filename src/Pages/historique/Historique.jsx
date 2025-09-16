@@ -1,14 +1,18 @@
 import React, { useState, useMemo } from "react";
 import Header from "../../Components/header/Header";
+import { getUser, saveUser } from "../../utils/auth";
+
 
 const Historique = ({ books }) => {
-  const [user, setUser] = useState({
-      email: "florian@example.com",
-      password: "password123",
-      firstName: "Florian",
-      lastName: "Bar",
-      birthDate: "1990-01-01",
-    });
+  const [user, setUser] = useState(
+    getUser() || {
+      email: "",
+      password: "",
+      first_name: "",
+      last_name: "",
+      birthday: "",
+    }
+  );
 
   const allEntries = useMemo(() => {
     const entries = [];

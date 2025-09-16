@@ -66,6 +66,7 @@ const Home = ({ books, setBooks }) => {
       book.status,
       book.price,
       book.owner,
+      book.isbn,
       book.rentalInfo?.renter || "",
       book.rentalInfo?.rentDate || "",
       book.rentalInfo?.returnDate || "",
@@ -88,7 +89,7 @@ const Home = ({ books, setBooks }) => {
 
   return (
     <>
-      <Header username="Florian" />
+      <Header  />
       <div style={{ padding: "1rem 1rem" }}>
         <h2>Liste des livres</h2>
         <ActionMenu />
@@ -101,9 +102,9 @@ const Home = ({ books, setBooks }) => {
           {/* <button onClick={() => alert("Modifier un livre")} title="Modifier un livre">
             <img src={editIcon} alt="edit icon" />
           </button> */}
-          <button onClick={() => alert("Supprimer un livre")} title="Supprimer un livre">
+          {/* <button onClick={() => alert("Supprimer un livre")} title="Supprimer un livre">
             <img src={deleteIcon} alt="delete icon" />
-          </button>
+          </button> */}
           <button onClick={() => exportToCSV(filteredBooks, "books-filtrés.csv")} title="Exporter CSV (filtré)">
             <img src={exportFilterIcon} alt="export with filter icon" />
           </button>

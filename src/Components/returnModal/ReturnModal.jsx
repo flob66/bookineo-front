@@ -38,7 +38,7 @@ const ReturnModal = ({ book, onClose, onConfirm }) => {
             />
           </label>
 
-          <label>
+          <label className="comment-container">
             Commentaire (facultatif)
             <textarea
               value={comment}
