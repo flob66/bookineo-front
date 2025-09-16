@@ -14,11 +14,11 @@ export  const login = async (email, password) => {
     }
 }
 
-export const register = async (firstName, lastName, email, birthDate, password) => {
+export const register = async (first_name, last_name, email, birthday, password) => {
     try {
         const response = await fetch('http://localhost:8000/api/register', {
             method: 'POST',
-            body: JSON.stringify({ firstName, lastName, email, birthDate, password })
+            body: JSON.stringify({ first_name, last_name, email, birthday, password })
         });
         if (!response.ok) {
             throw new Error('Register failed');
