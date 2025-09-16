@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Header from "../../Components/header/Header";
 
 const Historique = ({ books }) => {
@@ -10,6 +10,25 @@ const Historique = ({ books }) => {
       birthDate: "1990-01-01",
     });
 
+  const allEntries = useMemo(() => {
+    const entries = [];
+    books.forEach((b) => {
+      (b.history || []).forEach((h) => {
+        entries.push({
+          bookId: b.id,
+          title: b.title,
+          owner: b.owner,
+          renter: h.renter,
+          rentDate: h.rentDate,
+          returnDate: h.returnDate,
+          duration: h.duration,
+          comment: h.comment || "",
+        });
+      });
+    });
+    return entries;
+  }, [books]);
+
   const history = books.filter((b) => b.rentalInfo);
 
   const [filters, setFilters] = useState({
@@ -19,41 +38,27 @@ const Historique = ({ books }) => {
     date: "",
   });
 
-  const filteredHistory = history.filter((book) => {
-    if (filters.title && !book.title.toLowerCase().includes(filters.title.toLowerCase())) return false;
-    if (filters.owner && !book.owner.toLowerCase().includes(filters.owner.toLowerCase())) return false;
-    if (filters.renter && !book.rentalInfo.renter.toLowerCase().includes(filters.renter.toLowerCase())) return false;
-    if (filters.date && book.rentalInfo.rentDate !== filters.date) return false;
+ const filtered = allEntries.filter((e) => {
+    if (filters.title && !e.title.toLowerCase().includes(filters.title.toLowerCase())) return false;
+    if (filters.owner && !e.owner.toLowerCase().includes(filters.owner.toLowerCase())) return false;
+    if (filters.renter && !e.renter.toLowerCase().includes(filters.renter.toLowerCase())) return false;
+    if (filters.date && e.rentDate !== filters.date) return false;
     return true;
   });
 
   return (
-    <><Header username={user.firstName} /><div style={{ padding: "1rem" }}>
-      <h2>Historique des Locations</h2>
+    <><Header username={user.firstName} />
+   <div style={{ padding: "1rem" }}>
+      <h2>Historique des locations</h2>
 
-      <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-        <input
-          type="text"
-          placeholder="Filtrer par livre"
-          value={filters.title}
-          onChange={(e) => setFilters({ ...filters, title: e.target.value })} />
-        <input
-          type="text"
-          placeholder="Filtrer par propriétaire"
-          value={filters.owner}
-          onChange={(e) => setFilters({ ...filters, owner: e.target.value })} />
-        <input
-          type="text"
-          placeholder="Filtrer par locataire"
-          value={filters.renter}
-          onChange={(e) => setFilters({ ...filters, renter: e.target.value })} />
-        <input
-          type="date"
-          value={filters.date}
-          onChange={(e) => setFilters({ ...filters, date: e.target.value })} />
+      <div style={{ marginBottom: "1rem", display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+        <input placeholder="Livre" value={filters.title} onChange={(e) => setFilters({ ...filters, title: e.target.value })} />
+        <input placeholder="Propriétaire" value={filters.owner} onChange={(e) => setFilters({ ...filters, owner: e.target.value })} />
+        <input placeholder="Locataire" value={filters.renter} onChange={(e) => setFilters({ ...filters, renter: e.target.value })} />
+        <input type="date" value={filters.date} onChange={(e) => setFilters({ ...filters, date: e.target.value })} />
       </div>
 
-      {filteredHistory.length === 0 ? (
+      {filtered.length === 0 ? (
         <p>Aucun historique disponible.</p>
       ) : (
         <table className="book-table">
@@ -65,17 +70,19 @@ const Historique = ({ books }) => {
               <th>Date de location</th>
               <th>Date de retour</th>
               <th>Durée</th>
+              <th>Commentaire</th>
             </tr>
           </thead>
           <tbody>
-            {filteredHistory.map((book) => (
-              <tr key={book.id}>
-                <td data-label="Titre">{book.title}</td>
-                <td data-label="Propriétaire">{book.owner}</td>
-                <td data-label="Locataire">{book.rentalInfo.renter}</td>
-                <td data-label="Date de location">{book.rentalInfo.rentDate}</td>
-                <td data-label="Date de retour">{book.rentalInfo.returnDate}</td>
-                <td data-label="Durée">{book.rentalInfo.duration}</td>
+            {filtered.map((e, idx) => (
+              <tr key={idx}>
+                <td>{e.title}</td>
+                <td>{e.owner}</td>
+                <td>{e.renter}</td>
+                <td>{e.rentDate}</td>
+                <td>{e.returnDate}</td>
+                <td>{e.duration}</td>
+                <td>{e.comment}</td>
               </tr>
             ))}
           </tbody>
