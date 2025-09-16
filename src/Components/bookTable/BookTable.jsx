@@ -1,7 +1,10 @@
 import React from "react";
 import "./BookTable.css";
+import { useNavigate } from "react-router-dom";
 
-const BookTable = ({ books, setSelectedBook }) => {
+const BookTable = ({ books, setSelectedBook, setDeleteBook  }) => {
+  const navigate = useNavigate();
+
   const handleDetail = (book) => {
     setSelectedBook(book);
   };
@@ -35,8 +38,8 @@ const BookTable = ({ books, setSelectedBook }) => {
             <td data-label="Propriétaire">{book.owner}</td>
             <td data-label="Actions">
               <button onClick={() => handleDetail(book)}>Détail</button>
-              <button onClick={() => alert("Modifier")}>Modifier</button>
-              <button onClick={() => alert("Supprimer")}>Supprimer</button>
+              <button onClick={() => navigate(`/edit-book/${book.id}`)}>Modifier</button>
+              <button onClick={() => setDeleteBook(book)}>Supprimer</button>
             </td>
           </tr>
         ))}

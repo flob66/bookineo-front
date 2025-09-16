@@ -8,6 +8,8 @@ import Messages from "./Pages/messagerie/Messages";
 import Location from "./Pages/location/Location";
 import Restitution from "./Pages/restitution/Restitution";
 import Historique from "./Pages/historique/Historique";
+import AddBook from "./Pages/addBook/AddBook";
+import EditBook from "./Pages/editBook/EditBook";
 
 
 function App() {
@@ -53,6 +55,8 @@ function App() {
         <Route path="/location" element={<Location books={books} setBooks={setBooks} />} />
         <Route path="/restitution" element={<Restitution books={books} setBooks={setBooks} />} />
         <Route path="/historique" element={<Historique books={books} />} />
+        <Route path="/add-book" element={<AddBook />} />
+        <Route path="/edit-book/:id" element={<EditBook books={books} setBooks={setBooks} />} />
       </Routes>
     </Router>
   );
