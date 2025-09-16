@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import InputField from "../../Components/inputField/InputField";
 import "./Login.css";
+import eyeIcon from "../../assets/svg/eye-show.svg"; 
+import eyeOffIcon from "../../assets/svg/eye-off.svg"; 
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,7 +23,7 @@ const Login = () => {
   };
 
   return (
-    <div className="form-container">
+    <div className="form-container form-container-login">
       <form className="form" onSubmit={handleLogin}>
         <h2>Se connecter</h2>
 
@@ -42,9 +44,9 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Votre mot de passe"
           icon={
-            <span onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? "Masquer" : "Voir"}
-            </span>
+            <button type="button" className="input-button" onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? <img src={eyeOffIcon} alt="Eye hide icon" title="Voir" /> : <img src={eyeIcon} alt="Eye icon" title="Masquer" />}
+            </button>
           }
         />
 

@@ -19,10 +19,10 @@ const Header = ({ username }) => {
       </Link>
 
       <div className="user-menu">
-        <div className="user-info" onClick={() => setMenuOpen(!menuOpen)}>
+        <button className="user-info" onClick={() => setMenuOpen(!menuOpen)}>
           <img src={userIcon} alt="Utilisateur" className="user-icon" />
           <span>{username}</span>
-        </div>
+        </button>
 
         {menuOpen && (
           <ul className="dropdown">
@@ -32,7 +32,9 @@ const Header = ({ username }) => {
             <li>
               <Link to="/messages">Messagerie</Link>
             </li>
-            <li onClick={handleLogout}>Déconnexion</li>
+            <li onClick={handleLogout}>
+              <Link to="/login">Déconnexion</Link>
+            </li>
           </ul>
         )}
       </div>

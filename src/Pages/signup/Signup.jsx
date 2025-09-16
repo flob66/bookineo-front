@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import InputField from "../../Components/inputField/InputField";
 import "./Signup.css";
+import eyeIcon from "../../assets/svg/eye-show.svg"; 
+import eyeOffIcon from "../../assets/svg/eye-off.svg"; 
+
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -98,12 +101,12 @@ const Signup = () => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Votre mot de passe"
           icon={
-            <span
-              className="password-toggle"
+            <button type="button"
+              className="password-toggle input-button"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? "Masquer" : "Voir"}
-            </span>
+              {showPassword ? <img src={eyeOffIcon} alt="Eye hide icon" title="Voir" /> : <img src={eyeIcon} alt="Eye icon" title="Masquer" />}
+            </button>
           }
         />
 
@@ -114,12 +117,12 @@ const Signup = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
           placeholder="Confirmez le mot de passe"
           icon={
-            <span
-              className="password-toggle"
+            <button type="button"
+              className="password-toggle input-button"
               onClick={() => setShowConfirm(!showConfirm)}
             >
-              {showConfirm ? "Masquer" : "Voir"}
-            </span>
+              {showConfirm ? <img src={eyeOffIcon} alt="Eye hide icon" title="Voir" /> : <img src={eyeIcon} alt="Eye icon" title="Masquer" />}
+            </button>
           }
         />
 
