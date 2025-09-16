@@ -3,6 +3,7 @@ import InputField from "../../Components/inputField/InputField";
 import "./Signup.css";
 import eyeIcon from "../../assets/svg/eye-show.svg"; 
 import eyeOffIcon from "../../assets/svg/eye-off.svg"; 
+import { register } from "../../http/user";
 
 
 const Signup = () => {
@@ -15,6 +16,7 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState("");
+  const [loginRegisterFromAPI, setRegisterInfoFromAPI] = useState(null);
 
   const validateEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -22,7 +24,7 @@ const Signup = () => {
   const validatePassword = (password) =>
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/.test(password);
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
 
     if (!validateEmail(email)) {
@@ -45,15 +47,25 @@ const Signup = () => {
     }
 
     setError("");
-    console.log("Compte créé !", {
-      email,
-      password,
-      firstName,
-      lastName,
-      birthDate,
-    });
 
-    window.location.href = "/login";
+    try {
+      const data = await register(firstName, lastName, email, birthDate, password);
+      setRegisterInfoFromAPI(data);
+      // window.location.href = "/home";
+      window.location.href = "/login";
+    } catch (error) {
+      setError("Erreur lors de la connexion");
+    }
+
+    // console.log("Compte créé !", {
+    //   email,
+    //   password,
+    //   firstName,
+    //   lastName,
+    //   birthDate,
+    // });
+
+    
   };
 
   return (
