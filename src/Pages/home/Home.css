@@ -15,7 +15,7 @@ h1{
     color: white;
     border-radius: 5px;
     border: 0;
-    max-height: 50px;
+    max-height: 45px;
     padding: 10px;
     box-shadow: 1px 1px 2px #3b82f6;
 }
@@ -26,6 +26,6 @@ h1{
 }
 
 .actions-container img{
-    max-width: 30px;
-    max-height: 30px;
+    max-width: 25px;
+    max-height: 25px;
 }

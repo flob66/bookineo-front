@@ -10,6 +10,8 @@ import editIcon from "../../assets/svg/edit.svg";
 import deleteIcon from "../../assets/svg/delete.svg"; 
 import exportIcon from "../../assets/svg/export.svg"; 
 import exportFilterIcon from "../../assets/svg/export-filter.svg"; 
+import { useNavigate } from "react-router-dom";
+import DeleteBookModal from "../../Components/deleteBookModal/DeleteBookModal";
 
 const Home = ({ books, setBooks }) => {
   const [filters, setFilters] = useState({
@@ -21,7 +23,10 @@ const Home = ({ books, setBooks }) => {
     priceMax: "",
   });
 
+  const navigate = useNavigate();
+
   const [selectedBook, setSelectedBook] = useState(null);
+  const [deleteBook, setDeleteBook] = useState(null);
 
   const filteredBooks = books.filter((book) => {
     if (filters.title && !book.title.toLowerCase().includes(filters.title.toLowerCase())) return false;
@@ -32,6 +37,11 @@ const Home = ({ books, setBooks }) => {
     if (filters.priceMax && book.price > parseFloat(filters.priceMax)) return false;
     return true;
   });
+
+  const handleDelete = (id) => {
+    const updatedBooks = books.filter((b) => b.id !== id);
+    setBooks(updatedBooks);
+  };
 
   const exportToCSV = (data, filename = "books.csv") => {
     const headers = [
@@ -85,12 +95,12 @@ const Home = ({ books, setBooks }) => {
         <Filters filters={filters} setFilters={setFilters} books={books} />
 
         <div className="actions-container">
-          <button onClick={() => alert("Ajouter un livre")} title="Ajouter un livre">
+          <button onClick={() => navigate("/add-book")} title="Ajouter un livre">
             <img src={addIcon} alt="add icon" />
           </button>
-          <button onClick={() => alert("Modifier un livre")} title="Modifier un livre">
+          {/* <button onClick={() => alert("Modifier un livre")} title="Modifier un livre">
             <img src={editIcon} alt="edit icon" />
-          </button>
+          </button> */}
           <button onClick={() => alert("Supprimer un livre")} title="Supprimer un livre">
             <img src={deleteIcon} alt="delete icon" />
           </button>
@@ -102,12 +112,20 @@ const Home = ({ books, setBooks }) => {
           </button>
         </div>
 
-        <BookTable books={filteredBooks} setSelectedBook={setSelectedBook} />
+        <BookTable books={filteredBooks} setSelectedBook={setSelectedBook} setDeleteBook={setDeleteBook} />
 
         {selectedBook && (
           <BookDetailModal
             book={selectedBook}
             onClose={() => setSelectedBook(null)}
+          />
+        )}
+
+        {deleteBook && (
+          <DeleteBookModal
+            book={deleteBook}
+            onClose={() => setDeleteBook(null)}
+            onDelete={handleDelete}
           />
         )}
       </div>
