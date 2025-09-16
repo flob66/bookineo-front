@@ -80,10 +80,10 @@ const EditBook = ({ books, setBooks }) => {
           <InputField
             label="Année de parution"
             type="number"
-            value={book.year}
+            value={book.published_date}
             onChange={handleChange}
             placeholder="1943"
-            name="year"
+            name="published_date"
           />
           <InputField
             label="Catégorie"
@@ -116,6 +116,14 @@ const EditBook = ({ books, setBooks }) => {
             onChange={handleChange}
             placeholder="1"
             name="isbn"
+          />
+          <InputField
+            label="Statut"
+            type="text"
+            value={book.status}
+            onChange={handleChange}
+            placeholder="à rendre"
+            name="status"
           />
 
           <button type="submit" className="btn">

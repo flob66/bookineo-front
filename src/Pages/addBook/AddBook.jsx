@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import "./AddBook.css";
 import Header from "../../Components/header/Header";
 import InputField from "../../Components/inputField/InputField";
+import { addBook } from "../../http/book";
 
 const AddBook = () => {
+  const [error, setError] = useState("");
   const [book, setBook] = useState({
     title: "",
     author: "",
-    year: "",
+    published_date: "",
+    status: "",
     category: "",
     price: "",
     owner: "", 
@@ -21,13 +24,29 @@ const AddBook = () => {
     setBook({ ...book, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Livre ajouté :", book);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+  setMessage("");
+
+  try {
+    await addBook(book); 
     setMessage("Livre ajouté avec succès !");
+    setBook({
+      title: "",
+      status: "",
+      author: "",
+      published_date: "",
+      category: "",
+      price: "",
+      owner: "",
+      isbn: "",
+    });
     setTimeout(() => setMessage(""), 3000);
-    setBook({ title: "", author: "", year: "", category: "", price: "", owner: "", isbn: "" });
-  };
+  } catch (error) {
+    setError("Erreur lors de l'ajout du livre");
+  }
+};
 
   return (
     <>
@@ -57,10 +76,10 @@ const AddBook = () => {
           <InputField
             label="Année de parution"
             type="number"
-            value={book.year}
+            value={book.published_date}
             onChange={handleChange}
             placeholder="1943"
-            name="year"
+            name="published_date"
           />
           <InputField
             label="Catégorie"
@@ -69,6 +88,14 @@ const AddBook = () => {
             onChange={handleChange}
             placeholder="Roman, Science-fiction..."
             name="category"
+          />
+          <InputField
+            label="Statut"
+            type="text"
+            value={book.status}
+            onChange={handleChange}
+            placeholder="à rendre"
+            name="status"
           />
           <InputField
             label="Prix (€)"
