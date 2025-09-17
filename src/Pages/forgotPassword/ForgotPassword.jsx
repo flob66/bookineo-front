@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import InputField from "../../Components/inputField/InputField";
 import "./ForgotPassword.css";
+import { user_check } from "../../http/user";
 
 const ForgotPassword = () => {
   const [form, setForm] = useState({
@@ -20,7 +21,7 @@ const ForgotPassword = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!form.email.includes("@")) {
@@ -35,9 +36,28 @@ const ForgotPassword = () => {
     setError("");
     setMessage("Informations validées ! Redirection...");
 
-    setTimeout(() => {
-      navigate("/reset-password"); 
-    }, 2000);
+    try {
+      const user = await user_check(
+        form.firstName,
+        form.lastName,
+        form.email,
+        form.birthDate
+      );
+
+      if (user) {
+
+        localStorage.setItem("resetUserId", user.user.id);
+
+        setTimeout(() => {
+          navigate("/reset-password");
+        }, 2000);
+      } else {
+        setError("Utilisateur introuvable");
+      }
+    } catch (err) {
+      setError("Erreur lors de la vérification de l'utilisateur");
+      console.error(err);
+    }
   };
 
   return (

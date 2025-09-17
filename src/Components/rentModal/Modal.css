@@ -18,6 +18,10 @@
   max-width: 400px;
 }
 
+.modal p{
+  text-align: start !important;
+}
+
 .modal h3 {
   margin-top: 0;
 }

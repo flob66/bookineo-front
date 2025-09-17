@@ -14,6 +14,7 @@ import ForgotPassword from "./Pages/forgotPassword/ForgotPassword";
 import ResetPassword from "./Pages/resetPassword/ResetPassword";
 import { getUser } from "./utils/auth";
 import { getBooks } from "./http/book";
+import Chatbot from "./Components/chatbot/Chatbot";
 
 const PrivateRoute = ({ children }) => {
   const user = getUser();
@@ -43,6 +44,7 @@ function App() {
 
   return (
     <Router>
+      <Chatbot />
       <Routes>
         {}
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />

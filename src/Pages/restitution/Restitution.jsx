@@ -39,7 +39,7 @@ const Restitution = ({ books, setBooks }) => {
 
         return {
           ...b,
-          status: "Disponible",            
+          status: "1",            
           rentalInfo: null,                
           history: [...(b.history || []), historyEntry], 
         };
