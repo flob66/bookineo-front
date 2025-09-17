@@ -18,8 +18,8 @@ const Filters = ({ filters, setFilters, books }) => {
         onChange={(e) => setFilters({ ...filters, status: e.target.value })}
       >
         <option value="">Tous</option>
-        <option value="Disponible">Disponible</option>
-        <option value="Loué">Loué</option>
+        <option value="1">Disponible</option>
+        <option value="0">Loué</option>
       </select>
 
       <select

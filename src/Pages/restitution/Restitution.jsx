@@ -17,7 +17,7 @@ const Restitution = ({ books, setBooks }) => {
 
   const [selectedBook, setSelectedBook] = useState(null);
 
-  const rentedBooks = (books || []).filter((b) => b.status === "Loué");
+  const rentedBooks = (books || []).filter((b) => b.status === "");
 
   const handleOpenReturn = (book) => {
     setSelectedBook(book);

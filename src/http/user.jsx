@@ -1,6 +1,6 @@
 export  const login = async (email, password) => {
     try {
-        const response = await fetch('http://localhost:8000/api/login', {
+        const response = await fetch('https://apibookineo.artacalan.com/api/login', {
             method: 'POST',
             body: JSON.stringify({ email, password })
         });
@@ -16,7 +16,7 @@ export  const login = async (email, password) => {
 
 export const register = async (first_name, last_name, email, birthday, password) => {
     try {
-        const response = await fetch('http://localhost:8000/api/register', {
+        const response = await fetch('https://apibookineo.artacalan.com/api/register', {
             method: 'POST',
             body: JSON.stringify({ first_name, last_name, email, birthday, password })
         });

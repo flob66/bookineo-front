@@ -90,7 +90,7 @@ const Home = ({ books, setBooks }) => {
   return (
     <>
       <Header  />
-      <div style={{ padding: "1rem 1rem" }}>
+      <div style={{ padding: "0rem 1rem 1rem 1rem" }}>
         <h2>Liste des livres</h2>
         <ActionMenu />
         <Filters filters={filters} setFilters={setFilters} books={books} />
