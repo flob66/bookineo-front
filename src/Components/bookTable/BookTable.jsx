@@ -28,7 +28,7 @@ const BookTable = ({ books, setSelectedBook, setDeleteBook  }) => {
         {books.map((book) => (
           <tr
             key={book.id}
-            className={book.status === "Disponible" ? "available" : "rented"}
+            className={book.status === "1" ? "available" : "rented"}
           >
             <td data-label="Titre">{book.title}</td>
             <td data-label="Auteur">{book.author}</td>

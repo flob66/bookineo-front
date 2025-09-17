@@ -10,7 +10,7 @@ const AddBook = () => {
     title: "",
     author: "",
     published_date: "",
-    status: "",
+    status: "0", 
     category: "",
     price: "",
     owner: "", 
@@ -20,41 +20,44 @@ const AddBook = () => {
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setBook({ ...book, [name]: value });
+    const { name, value, type, checked } = e.target;
+
+    const newValue = type === "checkbox" ? (checked ? "1" : "0") : value;
+    setBook({ ...book, [name]: newValue });
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
-  setMessage("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setMessage("");
 
-  try {
-    await addBook(book); 
-    setMessage("Livre ajouté avec succès !");
-    setBook({
-      title: "",
-      status: "",
-      author: "",
-      published_date: "",
-      category: "",
-      price: "",
-      owner: "",
-      isbn: "",
-    });
-    setTimeout(() => setMessage(""), 3000);
-  } catch (error) {
-    setError("Erreur lors de l'ajout du livre");
-  }
-};
+    try {
+      await addBook(book); 
+      setMessage("Livre ajouté avec succès !");
+      setBook({
+        title: "",
+        author: "",
+        published_date: "",
+        status: "0", 
+        category: "",
+        price: "",
+        owner: "",
+        isbn: "",
+      });
+      setTimeout(() => setMessage(""), 3000);
+    } catch (error) {
+      setError("Erreur lors de l'ajout du livre");
+    }
+  };
 
   return (
     <>
-      <Header  />
+      <Header />
       <div className="add-book-container">
         <h2>Ajouter un livre</h2>
 
         {message && <div className="success">{message}</div>}
+        {error && <div className="error">{error}</div>}
 
         <form className="add-book-form" onSubmit={handleSubmit}>
           <InputField
@@ -75,10 +78,9 @@ const AddBook = () => {
           />
           <InputField
             label="Année de parution"
-            type="number"
+            type="date"
             value={book.published_date}
             onChange={handleChange}
-            placeholder="1943"
             name="published_date"
           />
           <InputField
@@ -89,14 +91,18 @@ const AddBook = () => {
             placeholder="Roman, Science-fiction..."
             name="category"
           />
-          <InputField
-            label="Statut"
-            type="text"
-            value={book.status}
-            onChange={handleChange}
-            placeholder="à rendre"
-            name="status"
-          />
+
+          {}
+          <label className="checkbox-field">
+            <input
+              type="checkbox"
+              checked={book.status === "1"}
+              onChange={handleChange}
+              name="status"
+            />
+            Loué ?
+          </label>
+
           <InputField
             label="Prix (€)"
             type="number"

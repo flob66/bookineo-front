@@ -3,6 +3,7 @@ import "./EditBook.css";
 import Header from "../../Components/header/Header";
 import InputField from "../../Components/inputField/InputField";
 import { useParams, useNavigate } from "react-router-dom";
+import { updateBook } from "../../http/book";
 
 const EditBook = ({ books, setBooks }) => {
   const { id } = useParams(); 
@@ -12,41 +13,54 @@ const EditBook = ({ books, setBooks }) => {
 
   const [book, setBook] = useState(bookToEdit || {});
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!bookToEdit) {
       setMessage("Livre introuvable !");
+    } else {
+      setBook(bookToEdit);
     }
   }, [bookToEdit]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setBook({ ...book, [name]: value });
+    setBook((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
+
     if (!book.title || !book.author) {
-      setMessage("Titre et auteur sont obligatoires");
+      setError("Titre et auteur sont obligatoires");
       return;
     }
 
-    const updatedBooks = books.map((b) =>
-      b.id === book.id ? { ...book } : b
-    );
-    setBooks(updatedBooks);
+    try {
 
-    setMessage("Livre modifié avec succès !");
-    setTimeout(() => {
-      setMessage("");
-      navigate("/"); 
-    }, 1500);
+      const updatedBook = { ...book, status: book.status.toString() };
+
+      const data = await updateBook(updatedBook);
+
+      const updatedBooks = books.map((b) => (b.id === book.id ? updatedBook : b));
+      setBooks(updatedBooks);
+
+      setMessage("Livre modifié avec succès !");
+      setError("");
+      setTimeout(() => {
+        setMessage("");
+        navigate("/home");
+      }, 1500);
+    } catch (err) {
+      console.error(err);
+      setError("Erreur lors de la modification du livre");
+    }
   };
 
   if (!bookToEdit) {
     return (
       <div style={{ padding: "2rem" }}>
-        <Header  />
+        <Header />
         <p>{message}</p>
       </div>
     );
@@ -54,17 +68,18 @@ const EditBook = ({ books, setBooks }) => {
 
   return (
     <>
-      <Header  />
+      <Header />
       <div className="edit-book-container">
         <h2>Modifier le livre</h2>
 
         {message && <div className="success">{message}</div>}
+        {error && <div className="error">{error}</div>}
 
         <form className="edit-book-form" onSubmit={handleSave}>
           <InputField
             label="Titre"
             type="text"
-            value={book.title}
+            value={book.title || ""}
             onChange={handleChange}
             placeholder="Titre du livre"
             name="title"
@@ -72,57 +87,51 @@ const EditBook = ({ books, setBooks }) => {
           <InputField
             label="Auteur"
             type="text"
-            value={book.author}
+            value={book.author || ""}
             onChange={handleChange}
             placeholder="Nom de l'auteur"
             name="author"
           />
           <InputField
             label="Année de parution"
-            type="number"
-            value={book.published_date}
+            type="date"
+            value={book.published_date || ""}
             onChange={handleChange}
-            placeholder="1943"
             name="published_date"
           />
           <InputField
             label="Catégorie"
             type="text"
-            value={book.category}
+            value={book.category || ""}
             onChange={handleChange}
-            placeholder="Roman, Science-fiction..."
             name="category"
           />
           <InputField
             label="Prix (€)"
             type="number"
-            value={book.price}
+            value={book.price || ""}
             onChange={handleChange}
-            placeholder="10"
             name="price"
           />
           <InputField
             label="Propriétaire"
             type="text"
-            value={book.owner}
+            value={book.owner || ""}
             onChange={handleChange}
-            placeholder="Vous ?"
             name="owner"
           />
           <InputField
             label="ISBN"
-            type="number"
-            value={book.isbn}
+            type="text"
+            value={book.isbn || ""}
             onChange={handleChange}
-            placeholder="1"
             name="isbn"
           />
           <InputField
             label="Statut"
             type="text"
-            value={book.status}
+            value={book.status || "0"}
             onChange={handleChange}
-            placeholder="à rendre"
             name="status"
           />
 

@@ -41,7 +41,7 @@ const Location = ({ books, setBooks }) => {
     setSelectedBook(null);
   };
 
-  const availableBooks = books.filter((b) => b.status === "Disponible");
+  const availableBooks = books.filter((b) => b.status === "1");
 
   return (
     <><Header username={user.firstName} /><div style={{ padding: "1rem" }}>

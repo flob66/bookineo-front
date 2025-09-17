@@ -12,7 +12,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
-  const [loginInfoFromAPI, setLoginInfoFromAPI] = useState(null);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,8 +23,7 @@ const Login = () => {
     
     try {
       const data = await login(email, password);
-      setLoginInfoFromAPI(data);
-      saveUser(data);
+      saveUser(data?.user);
       window.location.href = "/home";
     } catch (error) {
       setError("Erreur lors de la connexion");
@@ -54,11 +52,23 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Votre mot de passe"
           icon={
-            <button type="button" className="input-button" onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? <img src={eyeOffIcon} alt="Eye hide icon" title="Voir" /> : <img src={eyeIcon} alt="Eye icon" title="Masquer" />}
+            <button
+              type="button"
+              className="input-button"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <img src={eyeOffIcon} alt="Eye hide icon" title="Voir" />
+              ) : (
+                <img src={eyeIcon} alt="Eye icon" title="Masquer" />
+              )}
             </button>
           }
         />
+
+        <div className="forgot-password">
+          <a href="/forgot-password">Mot de passe oublié ?</a>
+        </div>
 
         <div className="checkbox-link">
           <label>
