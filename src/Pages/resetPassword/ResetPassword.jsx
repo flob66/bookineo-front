@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import InputField from "../../Components/inputField/InputField";
 import "./ResetPassword.css";
+import { reset_password } from "../../http/user";
 
 const ResetPassword = () => {
   const [form, setForm] = useState({
@@ -17,13 +18,11 @@ const ResetPassword = () => {
   };
 
   const validatePassword = (password) => {
-
-    const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
     return regex.test(password);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validatePassword(form.password)) {
@@ -38,11 +37,30 @@ const ResetPassword = () => {
       return;
     }
 
-    setError("");
-    setMessage("Votre mot de passe a été réinitialisé avec succès !");
-    setForm({ password: "", confirmPassword: "" });
-    window.location.href = "/login"; 
+    try {
+      setError("");
 
+      const userId = localStorage.getItem("resetUserId");
+
+      if (!userId) {
+        setError("Aucun utilisateur sélectionné pour la réinitialisation.");
+        return;
+      }
+
+      await reset_password(userId, form.password);
+
+      setMessage("Votre mot de passe a été réinitialisé avec succès !");
+      setForm({ password: "", confirmPassword: "" });
+
+      localStorage.removeItem("resetUserId");
+
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
+    } catch (err) {
+      console.error(err);
+      setError("Erreur lors de la réinitialisation du mot de passe");
+    }
   };
 
   return (

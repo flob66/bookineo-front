@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BookTable from "../../Components/bookTable/BookTable";
 import Filters from "../../Components/filters/Filters";
 import BookDetailModal from "../../Components/bookDetailModal/BookDetailModal";
@@ -12,6 +12,8 @@ import exportIcon from "../../assets/svg/export.svg";
 import exportFilterIcon from "../../assets/svg/export-filter.svg"; 
 import { useNavigate } from "react-router-dom";
 import DeleteBookModal from "../../Components/deleteBookModal/DeleteBookModal";
+import { deleteBook } from "../../http/book";
+import { getBooks } from "../../http/book";
 
 const Home = ({ books, setBooks }) => {
   const [filters, setFilters] = useState({
@@ -26,7 +28,24 @@ const Home = ({ books, setBooks }) => {
   const navigate = useNavigate();
 
   const [selectedBook, setSelectedBook] = useState(null);
-  const [deleteBook, setDeleteBook] = useState(null);
+  const [deleteBooks, setDeleteBook] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      setLoading(true);
+      try {
+        const data = await getBooks();
+        setBooks(data);
+      } catch (err) {
+        console.error("Erreur lors de la récupération des livres :", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBooks();
+  }, [setBooks]);
 
   const filteredBooks = books.filter((book) => {
     if (filters.title && !book.title.toLowerCase().includes(filters.title.toLowerCase())) return false;
@@ -38,8 +57,9 @@ const Home = ({ books, setBooks }) => {
     return true;
   });
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const updatedBooks = books.filter((b) => b.id !== id);
+    await deleteBook(id);
     setBooks(updatedBooks);
   };
 
@@ -92,6 +112,7 @@ const Home = ({ books, setBooks }) => {
       <Header  />
       <div style={{ padding: "0rem 1rem 1rem 1rem" }}>
         <h2>Liste des livres</h2>
+         {loading && <p>Chargement des livres...</p>}
         <ActionMenu />
         <Filters filters={filters} setFilters={setFilters} books={books} />
 
@@ -122,9 +143,9 @@ const Home = ({ books, setBooks }) => {
           />
         )}
 
-        {deleteBook && (
+        {deleteBooks && (
           <DeleteBookModal
-            book={deleteBook}
+            book={deleteBooks}
             onClose={() => setDeleteBook(null)}
             onDelete={handleDelete}
           />

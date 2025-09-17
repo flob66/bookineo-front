@@ -24,9 +24,12 @@ const EditBook = ({ books, setBooks }) => {
   }, [bookToEdit]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setBook((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+
+    const newValue = type === "checkbox" ? (checked ? "1" : "0") : value;
+    setBook((prev) => ({ ...prev, [name]: newValue }));
   };
+
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -95,7 +98,7 @@ const EditBook = ({ books, setBooks }) => {
           <InputField
             label="Année de parution"
             type="date"
-            value={book.published_date || ""}
+            value={book.published_date ? book.published_date.split(" ")[0] : ""}
             onChange={handleChange}
             name="published_date"
           />
@@ -127,13 +130,16 @@ const EditBook = ({ books, setBooks }) => {
             onChange={handleChange}
             name="isbn"
           />
-          <InputField
-            label="Statut"
-            type="text"
-            value={book.status || "0"}
-            onChange={handleChange}
-            name="status"
-          />
+          <label className="checkbox-field">
+            <input
+              type="checkbox"
+              name="status"
+              checked={book.status === "1"}
+              onChange={handleChange}
+            />
+            Loué ?
+          </label>
+
 
           <button type="submit" className="btn">
             Sauvegarder

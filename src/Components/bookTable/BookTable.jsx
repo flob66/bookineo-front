@@ -32,9 +32,9 @@ const BookTable = ({ books, setSelectedBook, setDeleteBook  }) => {
           >
             <td data-label="Titre">{book.title}</td>
             <td data-label="Auteur">{book.author}</td>
-            <td data-label="Année">{book.published_date}</td>
+            <td data-label="Année">{new Date(book.published_date).getFullYear()}</td>
             <td data-label="Catégorie">{book.category}</td>
-            <td data-label="Statut">{book.status}</td>
+            <td data-label="Statut">{book.status === "1" ? "Disponible" : "Loué"}</td>
             <td data-label="Prix">{book.price}€</td>
             <td data-label="Propriétaire">{book.owner}</td>
             <td data-label="ISBN">{book.isbn}</td>

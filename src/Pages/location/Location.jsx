@@ -27,7 +27,7 @@ const Location = ({ books, setBooks }) => {
         b.id === bookId
           ? {
               ...b,
-              status: "Loué",
+              status: "",
               rentalInfo: {
                 renter: renterName,
                 rentDate: startDate,
