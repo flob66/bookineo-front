@@ -6,14 +6,18 @@ import Header from "../../Components/header/Header";
 import ActionMenu from "../../Components/actionMenu/ActionMenu";
 import "./Home.css";
 import addIcon from "../../assets/svg/add.svg";
-import editIcon from "../../assets/svg/edit.svg"; 
-import deleteIcon from "../../assets/svg/delete.svg"; 
 import exportIcon from "../../assets/svg/export.svg"; 
 import exportFilterIcon from "../../assets/svg/export-filter.svg"; 
 import { useNavigate } from "react-router-dom";
 import DeleteBookModal from "../../Components/deleteBookModal/DeleteBookModal";
-import { deleteBook } from "../../http/book";
-import { getBooks } from "../../http/book";
+import { deleteBook, getBooks } from "../../http/book";
+import {
+  searchBooks,
+  filterByStatus,
+  filterByCategory,
+  filterByAuthor,
+  filterByPrice,
+} from "../../http/filter";
 
 const Home = ({ books, setBooks }) => {
   const [filters, setFilters] = useState({
@@ -30,6 +34,7 @@ const Home = ({ books, setBooks }) => {
   const [selectedBook, setSelectedBook] = useState(null);
   const [deleteBooks, setDeleteBook] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [filteredBooks, setFilteredBooks] = useState([]); 
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -37,6 +42,7 @@ const Home = ({ books, setBooks }) => {
       try {
         const data = await getBooks();
         setBooks(data);
+        setFilteredBooks(data); 
       } catch (err) {
         console.error("Erreur lors de la récupération des livres :", err);
       } finally {
@@ -47,20 +53,42 @@ const Home = ({ books, setBooks }) => {
     fetchBooks();
   }, [setBooks]);
 
-  const filteredBooks = books.filter((book) => {
-    if (filters.title && !book.title.toLowerCase().includes(filters.title.toLowerCase())) return false;
-    if (filters.status && book.status !== filters.status) return false;
-    if (filters.category && book.category !== filters.category) return false;
-    if (filters.author && !book.author.toLowerCase().includes(filters.author.toLowerCase())) return false;
-    if (filters.priceMin && book.price < parseFloat(filters.priceMin)) return false;
-    if (filters.priceMax && book.price > parseFloat(filters.priceMax)) return false;
-    return true;
-  });
+  useEffect(() => {
+    const applyFilters = async () => {
+      setLoading(true);
+      try {
+        let data = [];
+
+        if (filters.title) {
+          data = await searchBooks(filters.title);
+        } else if (filters.status) {
+          data = await filterByStatus(filters.status);
+        } else if (filters.category) {
+          data = await filterByCategory(filters.category);
+        } else if (filters.author) {
+          data = await filterByAuthor(filters.author);
+        } else if (filters.priceMin || filters.priceMax) {
+          data = await filterByPrice(filters.priceMin, filters.priceMax);
+        } else {
+          data = await getBooks(); 
+        }
+
+        setFilteredBooks(data);
+      } catch (err) {
+        console.error("Erreur lors de l’application des filtres :", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    applyFilters();
+  }, [filters]);
 
   const handleDelete = async (id) => {
     const updatedBooks = books.filter((b) => b.id !== id);
     await deleteBook(id);
     setBooks(updatedBooks);
+    setFilteredBooks(updatedBooks);
   };
 
   const exportToCSV = (data, filename = "books.csv") => {
@@ -75,7 +103,7 @@ const Home = ({ books, setBooks }) => {
       "Locataire",
       "Date de location",
       "Date de retour",
-      "Durée"
+      "Durée",
     ];
 
     const rows = data.map((book) => [
@@ -109,39 +137,38 @@ const Home = ({ books, setBooks }) => {
 
   return (
     <>
-      <Header  />
+      <Header />
       <div style={{ padding: "0rem 1rem 1rem 1rem" }}>
         <h2>Liste des livres</h2>
         {loading && <p>Chargement des livres...</p>}
         <ActionMenu />
-        
-        <div className="actions-filters-bar">
-          
 
+        <div className="actions-filters-bar">
           <div className="actions-container">
             <button onClick={() => navigate("/add-book")} title="Ajouter un livre">
               <img src={addIcon} alt="add icon" />
             </button>
-            {/* <button onClick={() => alert("Modifier un livre")} title="Modifier un livre">
-              <img src={editIcon} alt="edit icon" />
-            </button> */}
-            {/* <button onClick={() => alert("Supprimer un livre")} title="Supprimer un livre">
-              <img src={deleteIcon} alt="delete icon" />
-            </button> */}
-            <button onClick={() => exportToCSV(filteredBooks, "books-filtrés.csv")} title="Exporter CSV (filtré)">
+            <button
+              onClick={() => exportToCSV(filteredBooks, "books-filtrés.csv")}
+              title="Exporter CSV (filtré)"
+            >
               <img src={exportFilterIcon} alt="export with filter icon" />
             </button>
-            <button onClick={() => exportToCSV(books, "books-complet.csv")} title="Exporter CSV (complet)">
+            <button
+              onClick={() => exportToCSV(books, "books-complet.csv")}
+              title="Exporter CSV (complet)"
+            >
               <img src={exportIcon} alt="export icon" />
             </button>
           </div>
           <Filters filters={filters} setFilters={setFilters} books={books} />
         </div>
-        
 
-       
-
-        <BookTable books={filteredBooks} setSelectedBook={setSelectedBook} setDeleteBook={setDeleteBook} />
+        <BookTable
+          books={filteredBooks}
+          setSelectedBook={setSelectedBook}
+          setDeleteBook={setDeleteBook}
+        />
 
         {selectedBook && (
           <BookDetailModal

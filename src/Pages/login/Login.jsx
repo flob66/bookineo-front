@@ -13,9 +13,8 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
 
-  const handleLogin = async (e) => {
+ const handleLogin = async (e) => {
     e.preventDefault();
-
     if (!email.includes("@")) {
       setError("Email invalide");
       return;
@@ -30,10 +29,10 @@ const Login = () => {
         return;
       }
 
-      saveUser({
-        ...data.user,
-        createdAt: Date.now(), 
-      });
+      saveUser(
+        { ...data.user, createdAt: Date.now() },
+        rememberMe 
+      );
 
       window.location.href = "/home";
     } catch (error) {

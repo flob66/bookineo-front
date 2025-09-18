@@ -1,0 +1,42 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 400px;
+  max-width: 90%;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn.cancel {
+  background: #ccc;
+}
+
+.message-form{
+    display: grid;
+    gap: 15px;
+}
+
+.label{
+    display:flex;
+    gap: 10px;
+    align-items: center;
+}
