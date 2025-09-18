@@ -92,17 +92,6 @@ const AddBook = () => {
             name="category"
           />
 
-          {}
-          <label className="checkbox-field">
-            <input
-              type="checkbox"
-              checked={book.status === "1"}
-              onChange={handleChange}
-              name="status"
-            />
-            Loué ?
-          </label>
-
           <InputField
             label="Prix (€)"
             type="number"
@@ -127,6 +116,17 @@ const AddBook = () => {
             placeholder="1"
             name="isbn"
           />
+
+          {}
+          <label className="checkbox-field">
+            <input
+              type="checkbox"
+              checked={book.status === "1"}
+              onChange={handleChange}
+              name="status"
+            />
+            Loué ?
+          </label>
 
           <button type="submit" className="btn">
             Ajouter

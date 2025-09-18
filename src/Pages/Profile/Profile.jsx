@@ -3,12 +3,13 @@ import Header from "../../Components/header/Header";
 import InputField from "../../Components/inputField/InputField";
 import "./Profile.css";
 import { getUser, saveUser } from "../../utils/auth";
+import { updateUser } from "../../http/user";
 
 const Profile = () => {
   const [user, setUser] = useState(
     getUser() || {
       email: "",
-      password: "",
+      // password: "",
       first_name: "",
       last_name: "",
       birthday: "",
@@ -24,6 +25,7 @@ const Profile = () => {
   };
 
   const handleSave = () => {
+    updateUser(user.first_name, user.last_name, user.birthday, user.email, user.id)
     saveUser(user); 
     setEditMode(false);
     setMessage("Profil mis à jour avec succès !");
@@ -48,7 +50,7 @@ const Profile = () => {
           disabled={!editMode}
         />
 
-        <InputField
+        {/* <InputField
           label="Mot de passe"
           type="password"
           value={user.password}
@@ -56,7 +58,7 @@ const Profile = () => {
           placeholder="Mot de passe"
           name="password"
           disabled={!editMode}
-        />
+        /> */}
 
         <InputField
           label="Prénom"

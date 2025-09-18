@@ -1,0 +1,12 @@
+.filters-container{
+    /* margin-bottom: 1rem; */
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .filters-container{
+        margin-bottom: 1rem;
+    }
+}

@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import "./Header.css";
 import logo from "../../assets/logo.png";
 import userIcon from "../../assets/user-icon.png";
-import { getUser } from "../../utils/auth";
+import { getUser, clearUser } from "../../utils/auth";
 
 const Header = () => {
   const user = getUser();
@@ -12,7 +12,7 @@ const Header = () => {
   const location = useLocation();
 
   const handleLogout = () => {
-    localStorage.clear();
+    clearUser();
     window.location.href = "/login";
   };
 

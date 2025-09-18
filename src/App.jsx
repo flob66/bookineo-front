@@ -15,6 +15,7 @@ import ResetPassword from "./Pages/resetPassword/ResetPassword";
 import { getUser } from "./utils/auth";
 import { getBooks } from "./http/book";
 import Chatbot from "./Components/chatbot/Chatbot";
+import AuthProvider from "./utils/authProvider";
 
 const PrivateRoute = ({ children }) => {
   const user = getUser();
@@ -44,27 +45,102 @@ function App() {
 
   return (
     <Router>
-      <Chatbot />
-      <Routes>
-        {}
-        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-        <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
-        <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
-        <Route path="/reset-password" element={<PublicRoute><ResetPassword /></PublicRoute>} />
+      <AuthProvider>
+        <Routes>
+          <Route
+            path="/login"
+            element={<PublicRoute><Login /></PublicRoute>}
+          />
+          <Route
+            path="/signup"
+            element={<PublicRoute><Signup /></PublicRoute>}
+          />
+          <Route
+            path="/forgot-password"
+            element={<PublicRoute><ForgotPassword /></PublicRoute>}
+          />
+          <Route
+            path="/reset-password"
+            element={<PublicRoute><ResetPassword /></PublicRoute>}
+          />
 
-        {}
-        <Route path="/home" element={<PrivateRoute><Home books={books} setBooks={setBooks} /></PrivateRoute>} />
-        <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-        <Route path="/messages" element={<PrivateRoute><Messages /></PrivateRoute>} />
-        <Route path="/location" element={<PrivateRoute><Location books={books} setBooks={setBooks} /></PrivateRoute>} />
-        <Route path="/restitution" element={<PrivateRoute><Restitution books={books} setBooks={setBooks} /></PrivateRoute>} />
-        <Route path="/historique" element={<PrivateRoute><Historique books={books} /></PrivateRoute>} />
-        <Route path="/add-book" element={<PrivateRoute><AddBook /></PrivateRoute>} />
-        <Route path="/edit-book/:id" element={<PrivateRoute><EditBook books={books} setBooks={setBooks} /></PrivateRoute>} />
+          {}
+          <Route
+            path="/home"
+            element={
+              <PrivateRoute>
+                <Chatbot />
+                <Home books={books} setBooks={setBooks} />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Chatbot />
+                <Profile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/messages"
+            element={
+              <PrivateRoute>
+                <Chatbot />
+                <Messages />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/location"
+            element={
+              <PrivateRoute>
+                <Chatbot />
+                <Location books={books} setBooks={setBooks} />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/restitution"
+            element={
+              <PrivateRoute>
+                <Chatbot />
+                <Restitution books={books} setBooks={setBooks} />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/historique"
+            element={
+              <PrivateRoute>
+                <Chatbot />
+                <Historique books={books} />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/add-book"
+            element={
+              <PrivateRoute>
+                <Chatbot />
+                <AddBook />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/edit-book/:id"
+            element={
+              <PrivateRoute>
+                <Chatbot />
+                <EditBook books={books} setBooks={setBooks} />
+              </PrivateRoute>
+            }
+          />
 
-        {}
-        <Route path="/" element={<Navigate to="/home" replace />} />
-      </Routes>
+          <Route path="/" element={<Navigate to="/home" replace />} />
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 }

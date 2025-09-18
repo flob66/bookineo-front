@@ -39,3 +39,10 @@
   margin-bottom: 1rem;
   font-weight: bold;
 }
+
+.book-title-container{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}

@@ -1,11 +1,13 @@
 import React from "react";
+import "./Filters.css";
+
 
 const Filters = ({ filters, setFilters, books }) => {
   const categories = [...new Set(books.map((b) => b.category))];
   const authors = [...new Set(books.map((b) => b.author))];
 
   return (
-    <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+    <div className="filters-container">
       <input
         type="text"
         placeholder="Recherche par titre"

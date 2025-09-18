@@ -15,15 +15,26 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     if (!email.includes("@")) {
       setError("Email invalide");
       return;
     }
     setError("");
-    
+
     try {
       const data = await login(email, password);
-      saveUser(data?.user);
+
+      if (!data?.user) {
+        setError("Identifiants incorrects");
+        return;
+      }
+
+      saveUser({
+        ...data.user,
+        createdAt: Date.now(), 
+      });
+
       window.location.href = "/home";
     } catch (error) {
       setError("Erreur lors de la connexion");

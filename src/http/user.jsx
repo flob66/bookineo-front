@@ -61,3 +61,19 @@ export const reset_password = async (id, new_password) => {
         throw error;
     }
 }
+
+export const updateUser = async (first_name, last_name, birthday, email, id) => {
+    try {
+        const response = await fetch(`https://apibookineo.artacalan.com/api/update-user/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({ first_name, last_name, birthday, email })
+        });
+        if (!response.ok) {
+            throw new Error('Update failed');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error in:', error);
+        throw error;
+    }
+}
