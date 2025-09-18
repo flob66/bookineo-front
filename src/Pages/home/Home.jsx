@@ -112,27 +112,34 @@ const Home = ({ books, setBooks }) => {
       <Header  />
       <div style={{ padding: "0rem 1rem 1rem 1rem" }}>
         <h2>Liste des livres</h2>
-         {loading && <p>Chargement des livres...</p>}
+        {loading && <p>Chargement des livres...</p>}
         <ActionMenu />
-        <Filters filters={filters} setFilters={setFilters} books={books} />
+        
+        <div className="actions-filters-bar">
+          
 
-        <div className="actions-container">
-          <button onClick={() => navigate("/add-book")} title="Ajouter un livre">
-            <img src={addIcon} alt="add icon" />
-          </button>
-          {/* <button onClick={() => alert("Modifier un livre")} title="Modifier un livre">
-            <img src={editIcon} alt="edit icon" />
-          </button> */}
-          {/* <button onClick={() => alert("Supprimer un livre")} title="Supprimer un livre">
-            <img src={deleteIcon} alt="delete icon" />
-          </button> */}
-          <button onClick={() => exportToCSV(filteredBooks, "books-filtrés.csv")} title="Exporter CSV (filtré)">
-            <img src={exportFilterIcon} alt="export with filter icon" />
-          </button>
-          <button onClick={() => exportToCSV(books, "books-complet.csv")} title="Exporter CSV (complet)">
-            <img src={exportIcon} alt="export icon" />
-          </button>
+          <div className="actions-container">
+            <button onClick={() => navigate("/add-book")} title="Ajouter un livre">
+              <img src={addIcon} alt="add icon" />
+            </button>
+            {/* <button onClick={() => alert("Modifier un livre")} title="Modifier un livre">
+              <img src={editIcon} alt="edit icon" />
+            </button> */}
+            {/* <button onClick={() => alert("Supprimer un livre")} title="Supprimer un livre">
+              <img src={deleteIcon} alt="delete icon" />
+            </button> */}
+            <button onClick={() => exportToCSV(filteredBooks, "books-filtrés.csv")} title="Exporter CSV (filtré)">
+              <img src={exportFilterIcon} alt="export with filter icon" />
+            </button>
+            <button onClick={() => exportToCSV(books, "books-complet.csv")} title="Exporter CSV (complet)">
+              <img src={exportIcon} alt="export icon" />
+            </button>
+          </div>
+          <Filters filters={filters} setFilters={setFilters} books={books} />
         </div>
+        
+
+       
 
         <BookTable books={filteredBooks} setSelectedBook={setSelectedBook} setDeleteBook={setDeleteBook} />
 

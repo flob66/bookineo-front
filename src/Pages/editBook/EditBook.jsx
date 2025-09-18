@@ -73,7 +73,7 @@ const EditBook = ({ books, setBooks }) => {
     <>
       <Header />
       <div className="edit-book-container">
-        <h2>Modifier le livre</h2>
+        <h2>Modifier le livre : <span className="book-title-container">{book.title || ""}</span></h2>
 
         {message && <div className="success">{message}</div>}
         {error && <div className="error">{error}</div>}
