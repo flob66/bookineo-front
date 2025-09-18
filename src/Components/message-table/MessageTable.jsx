@@ -6,7 +6,7 @@ const MessageTable = ({ messages, onRead }) => {
 
   const handleClick = (message) => {
     setSelectedMessage(message);
-    if (!message.read) {
+    if (message.seen === 0) {
       onRead(message.id);
     }
   };
@@ -26,11 +26,11 @@ const MessageTable = ({ messages, onRead }) => {
             <tr
               key={msg.id}
               onClick={() => handleClick(msg)}
-              className={msg.read ? "read" : "unread"}
+              className={msg.seen ? "read" : "unread"}
             >
-              <td>{msg.sender}</td>
-              <td>{msg.date}</td>
-              <td>{msg.preview}</td>
+              <td>{msg.sender_first_name} {msg.sender_last_name}</td>
+              <td>{new Date(msg.send_at).toLocaleDateString()}</td>
+              <td>{msg.message.length > 30 ? msg.message.slice(0, 30) + "..." : msg.message}</td>
             </tr>
           ))}
         </tbody>
@@ -38,8 +38,8 @@ const MessageTable = ({ messages, onRead }) => {
 
       {selectedMessage && (
         <div className="message-detail">
-          <h3>Message de {selectedMessage.sender}</h3>
-          <p>{selectedMessage.content}</p>
+          <h3>Message de {selectedMessage.sender_first_name} {selectedMessage.sender_last_name}</h3>
+          <p>{selectedMessage.message}</p>
           <button onClick={() => setSelectedMessage(null)}>Fermer</button>
         </div>
       )}
