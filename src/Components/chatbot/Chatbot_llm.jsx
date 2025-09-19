@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Chatbot.css";
 import messageIcon from "../../assets/svg/message.svg";
-import { askBot } from "../../http/llm";
+import { askBot, sendQuestion } from "../../http/llm";
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +19,7 @@ const Chatbot = () => {
     setInput("");
     setLoading(true);
 
-    const botReply = await askBot(input);
+    const botReply = await sendQuestion({ question: input });
 
     setMessages((prev) => [
       ...prev,
