@@ -137,7 +137,7 @@ const EditBook = ({ books, setBooks }) => {
               checked={book.status === "1"}
               onChange={handleChange}
             />
-            Loué ?
+            Disponible ?
           </label>
 
 

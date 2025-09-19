@@ -11,6 +11,13 @@ const MessageTable = ({ messages, onRead }) => {
     }
   };
 
+  const handleKeyDown = (e, message) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault(); 
+      handleClick(message);
+    }
+  };
+
   return (
     <div>
       <table className="message-table">
@@ -26,11 +33,19 @@ const MessageTable = ({ messages, onRead }) => {
             <tr
               key={msg.id}
               onClick={() => handleClick(msg)}
+              onKeyDown={(e) => handleKeyDown(e, msg)}
               className={msg.seen ? "read" : "unread"}
+              tabIndex={0} 
+              role="button" 
+              aria-pressed={selectedMessage?.id === msg.id} 
             >
               <td>{msg.sender_first_name} {msg.sender_last_name}</td>
               <td>{new Date(msg.send_at).toLocaleDateString()}</td>
-              <td>{msg.message.length > 30 ? msg.message.slice(0, 30) + "..." : msg.message}</td>
+              <td>
+                {msg.message.length > 30
+                  ? msg.message.slice(0, 30) + "..."
+                  : msg.message}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -38,7 +53,10 @@ const MessageTable = ({ messages, onRead }) => {
 
       {selectedMessage && (
         <div className="message-detail">
-          <h3>Message de {selectedMessage.sender_first_name} {selectedMessage.sender_last_name}</h3>
+          <h3>
+            Message de {selectedMessage.sender_first_name}{" "}
+            {selectedMessage.sender_last_name}
+          </h3>
           <p>{selectedMessage.message}</p>
           <button onClick={() => setSelectedMessage(null)}>Fermer</button>
         </div>

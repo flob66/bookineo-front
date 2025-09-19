@@ -123,8 +123,14 @@ function App() {
             path="/add-book"
             element={
               <PrivateRoute>
-                <Chatbot />
-                <AddBook />
+                {getUser()?.role === 1 ? (
+                  <>
+                    <Chatbot />
+                    <AddBook />
+                  </>
+                ) : (
+                  <Navigate to="/home" replace />
+                )}
               </PrivateRoute>
             }
           />
@@ -132,8 +138,14 @@ function App() {
             path="/edit-book/:id"
             element={
               <PrivateRoute>
-                <Chatbot />
-                <EditBook books={books} setBooks={setBooks} />
+                {getUser()?.role === 1 ? (
+                  <>
+                    <Chatbot />
+                    <EditBook books={books} setBooks={setBooks} />
+                  </>
+                ) : (
+                  <Navigate to="/home" replace />
+                )}
               </PrivateRoute>
             }
           />

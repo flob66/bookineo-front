@@ -1,6 +1,7 @@
 .book-table {
   border-collapse: collapse;
   margin-bottom: 1rem;
+  margin: auto;
 }
 
 .book-table th, .book-table td {

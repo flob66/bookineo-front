@@ -9,7 +9,6 @@ const Profile = () => {
   const [user, setUser] = useState(
     getUser() || {
       email: "",
-      // password: "",
       first_name: "",
       last_name: "",
       birthday: "",
@@ -18,18 +17,30 @@ const Profile = () => {
 
   const [editMode, setEditMode] = useState(false);
   const [message, setMessage] = useState("");
+  const [error, setError] = useState(""); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    updateUser(user.first_name, user.last_name, user.birthday, user.email, user.id)
-    saveUser(user); 
-    setEditMode(false);
-    setMessage("Profil mis à jour avec succès !");
-    setTimeout(() => setMessage(""), 3000);
+  const handleSave = async () => {
+
+    if (!user.email.includes("@") || !/\S+@\S+\.\S+/.test(user.email)) {
+      setError("Adresse e-mail invalide");
+      return;
+    }
+    setError("");
+
+    try {
+      await updateUser(user.first_name, user.last_name, user.birthday, user.email, user.id);
+      saveUser(user);
+      setEditMode(false);
+      setMessage("Profil mis à jour avec succès !");
+      setTimeout(() => setMessage(""), 3000);
+    } catch (err) {
+      setError("Erreur lors de la mise à jour du profil");
+    }
   };
 
   return (
@@ -38,7 +49,9 @@ const Profile = () => {
       <div className="profile-container">
         <h2>Mon profil</h2>
 
+        {}
         {message && <div className="success">{message}</div>}
+        {error && <div className="error">{error}</div>}
 
         <InputField
           label="Adresse e-mail"
@@ -49,16 +62,6 @@ const Profile = () => {
           name="email"
           disabled={!editMode}
         />
-
-        {/* <InputField
-          label="Mot de passe"
-          type="password"
-          value={user.password}
-          onChange={handleChange}
-          placeholder="Mot de passe"
-          name="password"
-          disabled={!editMode}
-        /> */}
 
         <InputField
           label="Prénom"

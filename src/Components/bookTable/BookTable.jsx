@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import infoIcon from "../../assets/svg/info.svg"; 
 import editIcon from "../../assets/svg/edit.svg"; 
 import deleteIcon from "../../assets/svg/delete.svg"; 
+import { getUser } from "../../utils/auth";
 
 const BookTable = ({ books, setSelectedBook, setDeleteBook  }) => {
   const navigate = useNavigate();
@@ -11,6 +12,8 @@ const BookTable = ({ books, setSelectedBook, setDeleteBook  }) => {
   const handleDetail = (book) => {
     setSelectedBook(book);
   };
+
+  const user = getUser();
 
   return (
     <table className="book-table">
@@ -43,8 +46,12 @@ const BookTable = ({ books, setSelectedBook, setDeleteBook  }) => {
             <td data-label="ISBN">{book.isbn}</td>
             <td data-label="Actions">
               <button className="options-btn" onClick={() => handleDetail(book)} title="Détail"><img src={infoIcon} alt="info icon" /></button>
-              <button className="options-btn" onClick={() => navigate(`/edit-book/${book.id}`)} title="Modifier"><img src={editIcon} alt="edit icon" /></button>
-              <button className="options-btn delete-btn" onClick={() => setDeleteBook(book)} title="Supprimer"><img src={deleteIcon} alt="delete icon" /></button>
+              {user?.role === 1 && (
+               <>
+                 <button className="options-btn" onClick={() => navigate(`/edit-book/${book.id}`)} title="Modifier"><img src={editIcon} alt="edit icon" /></button>
+                  <button className="options-btn delete-btn" onClick={() => setDeleteBook(book)} title="Supprimer"><img src={deleteIcon} alt="delete icon" /></button>
+                </>
+              )}
             </td>
           </tr>
         ))}
