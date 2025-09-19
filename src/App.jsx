@@ -14,7 +14,7 @@ import ForgotPassword from "./Pages/forgotPassword/ForgotPassword";
 import ResetPassword from "./Pages/resetPassword/ResetPassword";
 import { getUser } from "./utils/auth";
 import { getBooks } from "./http/book";
-import Chatbot from "./Components/chatbot/Chatbot";
+import Chatbot from "./Components/chatbot/Chatbot_llm";
 import AuthProvider from "./utils/authProvider";
 
 const PrivateRoute = ({ children }) => {

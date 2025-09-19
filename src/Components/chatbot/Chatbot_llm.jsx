@@ -19,19 +19,14 @@ const Chatbot = () => {
     setInput("");
     setLoading(true);
 
-    try {
-      const botReply = await askBot(input);
-      setMessages((prev) => [...prev, { from: "bot", text: botReply }]);
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        { from: "bot", text: "Erreur de connexion au chatbot." },
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const botReply = await askBot(input);
 
+    setMessages((prev) => [
+      ...prev,
+      { from: "bot", text: botReply },
+    ]);
+    setLoading(false);
+  };
 
   return (
     <div className="chatbot-widget">
