@@ -1,60 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../Components/header/Header";
 import ReturnModal from "../../Components/returnModal/ReturnModal";
-import { getUser, saveUser } from "../../utils/auth";
-// import "./Restitution.css"; 
+import { getUser } from "../../utils/auth";
+import { getStillRents, returnBook } from "../../http/rent";
 
-const Restitution = ({ books, setBooks }) => {
-  const [user, setUser] = useState(
-      getUser() || {
-        email: "",
-        password: "",
-        first_name: "",
-        last_name: "",
-        birthday: "",
-      }
-  );
-
+const Restitution = () => {
+  const [user] = useState(getUser());
+  const [rentedBooks, setRentedBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
 
-  const rentedBooks = (books || []).filter((b) => b.status === "");
-
-  const handleOpenReturn = (book) => {
-    setSelectedBook(book);
+  const fetchRentedBooks = async () => {
+    try {
+      const data = await getStillRents();
+      setRentedBooks(data || []);
+    } catch (error) {
+      console.error("Erreur lors du chargement des livres à restituer :", error);
+      setRentedBooks([]);
+    }
   };
 
-  const handleConfirmReturn = (bookId, returnDate, comment) => {
-    setBooks((prev) =>
-      prev.map((b) => {
-        if (b.id !== bookId) return b;
+  useEffect(() => {
+    fetchRentedBooks();
+  }, []);
 
-        const prevRental = b.rentalInfo || {};
-        const historyEntry = {
-          renter: prevRental.renter || "",
-          rentDate: prevRental.rentDate || "",
-          returnDate: returnDate,
-          duration: prevRental.duration || "",
-          comment: comment || "",
-        };
+  const handleOpenReturn = (book) => setSelectedBook(book);
 
-        return {
-          ...b,
-          status: "1",            
-          rentalInfo: null,                
-          history: [...(b.history || []), historyEntry], 
-        };
-      })
-    );
-    setSelectedBook(null);
+  const handleConfirmReturn = async (book, returnDate, comment) => {
+    try {
+      if (!book || !book.id) return;
+      await returnBook(user.id, book.book_id, book.id); 
+
+      await fetchRentedBooks();
+      setSelectedBook(null);
+      alert("Livre restitué avec succès !");
+    } catch (error) {
+      console.error("Erreur lors de la restitution :", error);
+      alert("Erreur lors de la restitution. Veuillez réessayer.");
+    }
   };
 
   return (
     <>
-      <Header username={user.firstName} />
+      <Header username={user.first_name} />
       <div style={{ padding: "1rem" }}>
         <h2>Page de Restitution</h2>
 
-        {rentedBooks.length === 0 ? (
+        {(rentedBooks || []).length === 0 ? (
           <p>Aucun livre loué actuellement.</p>
         ) : (
           <table className="book-table">
@@ -68,17 +59,28 @@ const Restitution = ({ books, setBooks }) => {
               </tr>
             </thead>
             <tbody>
-              {rentedBooks.map((book) => (
-                <tr key={book.id} className="rented">
-                  <td data-label="Titre">{book.title}</td>
-                  <td data-label="Locataire">{book.rentalInfo?.renter || "-"}</td>
-                  <td data-label="Date de location">{book.rentalInfo?.rentDate || "-"}</td>
-                  <td data-label="Date de retour">{book.rentalInfo?.returnDate || "-"}</td>
-                  <td data-label="Action">
-                    <button className="options-btn" onClick={() => handleOpenReturn(book)}>Restituer</button>
-                  </td>
-                </tr>
-              ))}
+              {(rentedBooks || []).map((book) => {
+                const startDate = new Date(book.date_start_rent);
+                const returnDate = new Date(startDate);
+                returnDate.setDate(returnDate.getDate() + (book.number_days_rent || 0));
+
+                return (
+                  <tr key={book.id} className="rented">
+                    <td data-label="Titre">{book.title || "-"}</td>
+                    <td data-label="Locataire">{book.renter_first_name + ' ' + book.renter_last_name || "-"}</td>
+                    <td data-label="Date de location">{book.date_start_rent?.split("T")[0] || "-"}</td>
+                    <td data-label="Date de retour">{returnDate.toISOString().split("T")[0]}</td>
+                    <td data-label="Action">
+                      <button
+                        className="options-btn"
+                        onClick={() => handleOpenReturn(book)}
+                      >
+                        Restituer
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}
@@ -87,7 +89,7 @@ const Restitution = ({ books, setBooks }) => {
           <ReturnModal
             book={selectedBook}
             onClose={() => setSelectedBook(null)}
-            onConfirm={handleConfirmReturn}
+            onConfirm={handleConfirmReturn} 
           />
         )}
       </div>

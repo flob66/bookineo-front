@@ -18,6 +18,7 @@ import {
   filterByAuthor,
   filterByPrice,
 } from "../../http/filter";
+import { getUser } from "../../utils/auth";
 
 const Home = ({ books, setBooks }) => {
   const [filters, setFilters] = useState({
@@ -30,6 +31,8 @@ const Home = ({ books, setBooks }) => {
   });
 
   const navigate = useNavigate();
+
+  const user = getUser();
 
   const [selectedBook, setSelectedBook] = useState(null);
   const [deleteBooks, setDeleteBook] = useState(null);
@@ -145,9 +148,11 @@ const Home = ({ books, setBooks }) => {
 
         <div className="actions-filters-bar">
           <div className="actions-container">
-            <button onClick={() => navigate("/add-book")} title="Ajouter un livre">
-              <img src={addIcon} alt="add icon" />
-            </button>
+            {user?.role === 1 && (
+              <button onClick={() => navigate("/add-book")} title="Ajouter un livre">
+                <img src={addIcon} alt="add icon" />
+              </button>
+            )}
             <button
               onClick={() => exportToCSV(filteredBooks, "books-filtrés.csv")}
               title="Exporter CSV (filtré)"

@@ -36,7 +36,7 @@ const Login = () => {
 
       window.location.href = "/home";
     } catch (error) {
-      setError("Erreur lors de la connexion");
+      setError("Identifiants incorrects");
     }
   };
 

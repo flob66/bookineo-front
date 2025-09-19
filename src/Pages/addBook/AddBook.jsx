@@ -10,7 +10,7 @@ const AddBook = () => {
     title: "",
     author: "",
     published_date: "",
-    status: "0", 
+    status: "1", 
     category: "",
     price: "",
     owner: "", 
@@ -38,7 +38,7 @@ const AddBook = () => {
         title: "",
         author: "",
         published_date: "",
-        status: "0", 
+        status: "1", 
         category: "",
         price: "",
         owner: "",
@@ -125,7 +125,7 @@ const AddBook = () => {
               onChange={handleChange}
               name="status"
             />
-            Loué ?
+            Disponible ?
           </label>
 
           <button type="submit" className="btn">
